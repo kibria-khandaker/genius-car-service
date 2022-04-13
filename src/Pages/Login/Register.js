@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useCreateUserWithEmailAndPassword, useUpdateProfile } from 'react-firebase-hooks/auth';
 import { Link, useNavigate } from 'react-router-dom';
+import Loading from '../Shared/Loading/Loading';
 import auth from './../../firebase.init';
 import './Register.css';
 import SocialLogin from './SocialLogin/SocialLogin';
@@ -23,10 +24,16 @@ const Register = () => {
         navigate('/login')
     }
 
+    if (loading || updating) {
+        return <Loading></Loading>
+    }
+
+
     // condition for divert to home
-    // if (user) {
-    //     navigate('/home');
-    // }
+    if (user) {
+        // navigate('/home');
+        console.log('user:', user);
+    }
 
     const handleRegister = async (event) => {
         event.preventDefault();
@@ -44,7 +51,7 @@ const Register = () => {
         await createUserWithEmailAndPassword(email, password);
         await updateProfile({ displayName: name });
         navigate('/home');
-        // alert('Updated profile');
+        console.log('Updated profile');
         //}
 
         //---------------2 start hook code

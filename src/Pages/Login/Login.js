@@ -3,7 +3,10 @@ import { Button, Form } from 'react-bootstrap';
 import { useSendPasswordResetEmail, useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import auth from '../../firebase.init';
+import Loading from '../Shared/Loading/Loading';
 import SocialLogin from './SocialLogin/SocialLogin';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Login = () => {
     const emailRef = useRef('');
@@ -26,8 +29,11 @@ const Login = () => {
     ] = useSignInWithEmailAndPassword(auth);
 
     //---------------1 end hook code
-    const [sendPasswordResetEmail, sending ] = useSendPasswordResetEmail(auth);
-
+    const [sendPasswordResetEmail, sending] = useSendPasswordResetEmail(auth);
+    
+    if (loading || sending) {
+        return <Loading></Loading>
+    }
 
     if (error) {
         errorElement = <p className=' text-danger'>Error: {error?.message} </p>
@@ -67,10 +73,15 @@ const Login = () => {
     const navigateRegister = event => {
         navigate('/register')
     }
-    const resetPassword= async()=>{
+    const resetPassword = async () => {
         const email = emailRef.current.value;
-        await sendPasswordResetEmail(email);
-          alert('Sent email');
+        if (email) {
+            await sendPasswordResetEmail(email);
+            toast('Sent email');
+        }else{
+            toast('Enter your email');
+        }
+        // const notify = () => toast("Wow so easy !");
     }
     return (
         <div className='container w-50 mx-auto py-5'>
@@ -89,10 +100,11 @@ const Login = () => {
             <div className='text-center'>
                 {errorElement}
                 <p> Are you New in Genius Car Service? <Link to='/register' onClick={navigateRegister} className=' text-primary text-decoration-none'> Plz Register </Link>  </p>
-                <p> Forget Password? <Link to='/register' onClick={resetPassword} className=' text-primary text-decoration-none'> Reset Password </Link>  </p>
+                <p> Forget Password? <button onClick={resetPassword} className='border-0 rounded text-primary text-decoration-none'> Reset Password </button>  </p>
             </div>
 
             <SocialLogin></SocialLogin>
+            <ToastContainer />
         </div>
     );
 };
