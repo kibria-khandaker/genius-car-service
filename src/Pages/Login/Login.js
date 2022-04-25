@@ -2,11 +2,11 @@ import React, { useRef } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { useSendPasswordResetEmail, useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import auth from '../../firebase.init';
 import Loading from '../Shared/Loading/Loading';
 import SocialLogin from './SocialLogin/SocialLogin';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 const Login = () => {
     const emailRef = useRef('');
@@ -15,7 +15,6 @@ const Login = () => {
 
     //---------------3 start hook code
     let location = useLocation();
-
     let from = location.state?.from?.pathname || "/";
     //---------------3 end hook code
 
@@ -104,7 +103,7 @@ const Login = () => {
             </div>
 
             <SocialLogin></SocialLogin>
-            <ToastContainer />
+            
         </div>
     );
 };

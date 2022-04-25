@@ -24,7 +24,7 @@ const SocialLogin = () => {
     if (error || error1) {
         errorElement = <p className=' text-danger'>Error: {error?.message}  {error1?.message}</p>
     }
-    if (user) {
+    if (user || user1 ) {
         navigate(from, { replace: true });
     }
     // if (user || user1) {
