@@ -14,18 +14,27 @@ import Header from './Pages/Shared/Header/Header';
 import NotFound from './Pages/Shared/NotFound/NotFound';
 import { ToastContainer } from 'react-toastify';
 import Order from './Pages/Order/Order';
+import GoogleMap from './Pages/GoogleMap/GoogleMap';
 
 function App() {
   return (
     <div>
       <Header></Header>
       <Routes>
-        <Route path="/" element={<Home></Home>}></Route>
-        <Route path="/home" element={<Home></Home>}></Route>
+        <Route path="/" element={
+          <RequireAuth>
+            <Home></Home>
+          </RequireAuth>
+        }></Route>
+        <Route path="/home" element={
+          <RequireAuth>
+            <Home></Home>
+          </RequireAuth>
+        }></Route>
         <Route path="/service/:serviceId" element={<ServiceDetail />}></Route>
         <Route path="/about" element={<About></About>}></Route>
         <Route path="/login" element={<Login />}></Route>
-        <Route path="/register" element={<Register />}></Route>
+        <Route path="/location" element={<GoogleMap/>}></Route>
 
         <Route path="/checkout/:serviceId" element={
           <RequireAuth>

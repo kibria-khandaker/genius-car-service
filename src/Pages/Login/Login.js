@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { useRef } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { useSendPasswordResetEmail, useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
@@ -42,31 +43,20 @@ const Login = () => {
     //     navigate('/home');
     // }
 
-    if (user) {
-        navigate(from, { replace: true });
-    }
+    // if (user) {
+    //     navigate(from, { replace: true });
+    // }
 
-
-    const handleSubmit = event => {
+    const handleSubmit = async event => {
         event.preventDefault();
         const email = emailRef.current.value;
         const password = passwordRef.current.value;
 
         //---------------2 start hook code
-        signInWithEmailAndPassword(email, password)
-        // .then(()=>navigate(from, {replace: true}))
-        // .then(()=>{
-        //     if (error) {
-        //         console.log(error);
-        //         return;
-        //     }else{
-        //         navigate(from, {replace: true})
-        //         console.log(email, password);
-        //     }
-        // })
-        //---------------2 end hook code
-
-
+        await signInWithEmailAndPassword(email, password)
+        const {data} = await axios.post('http://localhost:5000/login', {email})
+        localStorage.setItem('accessToken', data.accessToken);
+        navigate(from, { replace: true });
     }
 
     const navigateRegister = event => {
